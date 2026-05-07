@@ -1,0 +1,6 @@
+option('tests', type: 'boolean', value: false, description: 'Build tests')
+option('examples', type: 'boolean', value: false, description: 'Build examples')
+option('crypto', type: 'boolean', value: true, description: 'Build with crypto library')
+
+option('openssl', type: 'feature', value: 'auto', description: 'Build with OpenSSL support')
+option('wolfssl', type: 'feature', value: 'auto', description: 'Build with wolfSSL support')
