@@ -1,6 +1,10 @@
 option('tests', type: 'boolean', value: false, description: 'Build tests')
 option('examples', type: 'boolean', value: false, description: 'Build examples')
 option('crypto', type: 'boolean', value: true, description: 'Build with crypto library')
+option('disable_logging', type: 'boolean', value: false, description: 'Disable debug logging')
+option('disable_strerror', type: 'boolean', value: false, description: 'Disable ngtcp2_strerror strings')
+option('disable_qlog', type: 'boolean', value: false, description: 'Disable qlog support')
+option('use_builtin_unreachable', type: 'boolean', value: false, description: 'Use compiler builtin unreachable intrinsic if possible or abort')
 
 option('openssl', type: 'feature', value: 'auto', description: 'Build with OpenSSL support')
 option('wolfssl', type: 'feature', value: 'auto', description: 'Build with wolfSSL support')

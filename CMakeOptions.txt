@@ -16,4 +16,7 @@ option(ENABLE_PICOTLS "Enable Picotls crypto backend" OFF)
 option(ENABLE_WOLFSSL   "Enable wolfSSL crypto backend" OFF)
 cmake_dependent_option(BUILD_TESTING "Enable tests" ON "ENABLE_STATIC_LIB" OFF)
 
+option(DISABLE_LOGGING  "Disable all debug logging")
+option(DISABLE_STRERROR "Disable strerror")
+
 # vim: ft=cmake:

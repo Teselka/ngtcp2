@@ -100,6 +100,8 @@ typedef enum ngtcp2_log_event {
   NGTCP2_LOG_EVENT_CCA = 0x40,
 } ngtcp2_log_event;
 
+#ifndef NGTCP2_DISABLE_LOGGING
+
 void ngtcp2_log_init(ngtcp2_log *log, const ngtcp2_cid *scid,
                      ngtcp2_log_write log_write, ngtcp2_printf log_printf,
                      char *buf, ngtcp2_tstamp ts, void *user_data);
@@ -176,5 +178,95 @@ static inline const char *ngtcp2_log_event_str(ngtcp2_log_event ev) {
   } while (0)
 
 #define ngtcp2_log_info(LOG, EV, ARG) ngtcp2_log_infof((LOG), (EV), (ARG))
+
+#else
+
+static inline void ngtcp2_log_init(ngtcp2_log *log, const ngtcp2_cid *scid,
+                     ngtcp2_log_write log_write, ngtcp2_printf log_printf,
+                     char *buf, ngtcp2_tstamp ts, void *user_data) 
+{
+  ((void)log);
+  ((void)scid);
+  ((void)log_write);
+  ((void)log_printf);
+  ((void)buf);
+  ((void)ts);
+  ((void)user_data);
+}
+
+static inline void ngtcp2_log_rx_fr(ngtcp2_log *log, const ngtcp2_pkt_hd *hd,
+                      const ngtcp2_frame *fr) 
+{
+  ((void)log);
+  ((void)hd);
+  ((void)fr);
+}
+
+static inline void ngtcp2_log_tx_fr(ngtcp2_log *log, const ngtcp2_pkt_hd *hd,
+                      const ngtcp2_frame *fr) 
+{
+  ((void)log);
+  ((void)hd);
+  ((void)fr);
+}
+
+static inline void ngtcp2_log_rx_vn(ngtcp2_log *log, const ngtcp2_pkt_hd *hd,
+                      const uint32_t *sv, size_t nsv) 
+{
+  ((void)log);
+  ((void)hd);
+  ((void)sv);
+  ((void)nsv);
+}
+
+static inline void ngtcp2_log_rx_sr(ngtcp2_log *log, const ngtcp2_pkt_stateless_reset2 *sr) 
+{
+  ((void)log);
+  ((void)sr);
+}
+
+static inline void ngtcp2_log_remote_tp(ngtcp2_log *log,
+                          const ngtcp2_transport_params *params) 
+{
+  ((void)log);
+  ((void)params);
+}
+
+static inline void ngtcp2_log_pkt_lost(ngtcp2_log *log, int64_t pkt_num, uint8_t type,
+                         uint8_t flags, ngtcp2_tstamp sent_ts)
+{
+  ((void)log);
+  ((void)pkt_num);
+  ((void)type);
+  ((void)flags);
+  ((void)sent_ts);
+}
+
+static inline void ngtcp2_log_rx_pkt_hd(ngtcp2_log *log, const ngtcp2_pkt_hd *hd) 
+{
+  ((void)log);
+  ((void)hd);
+}
+
+static inline void ngtcp2_log_tx_pkt_hd(ngtcp2_log *log, const ngtcp2_pkt_hd *hd) {
+  ((void)log);
+  ((void)hd);
+}
+
+static inline uint64_t ngtcp2_log_timestamp(const ngtcp2_log *log) {
+  ((void)log);
+  return 0;
+}
+
+static inline const char *ngtcp2_log_event_str(ngtcp2_log_event ev) {
+  return "";
+}
+
+#define NGTCP2_LOG_HD(LOG, EV)
+#define ngtcp2_log_infof_raw(LOG, EV, ...)
+#define ngtcp2_log_infof(LOG, EV, ...)
+#define ngtcp2_log_info(LOG, EV, ARG)
+
+#endif
 
 #endif /* !defined(NGTCP2_LOG_H) */

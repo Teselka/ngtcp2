@@ -26,6 +26,7 @@
 
 const char *ngtcp2_strerror(int liberr) {
   switch (liberr) {
+#ifndef NGTCP2_DISABLE_STRERROR
   case 0:
     return "NO_ERROR";
   case NGTCP2_ERR_INVALID_ARGUMENT:
@@ -110,6 +111,10 @@ const char *ngtcp2_strerror(int liberr) {
     return "ERR_IDLE_CLOSE";
   default:
     return "(unknown)";
+#else
+  default:
+    return "";
+#endif
   }
 }
 

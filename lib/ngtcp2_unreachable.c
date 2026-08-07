@@ -36,7 +36,7 @@
 #endif /* defined(WIN32) */
 
 void ngtcp2_unreachable_fail(const char *file, int line, const char *func) {
-#ifdef NGTCP2_UNREACHABLE_LOG
+#if defined(NGTCP2_UNREACHABLE_LOG) && !defined(NGTCP2_DISABLE_LOGGING)
   char *buf;
   size_t buflen;
   int rv;
