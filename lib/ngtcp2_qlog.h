@@ -60,6 +60,8 @@ typedef struct ngtcp2_qlog {
   void *user_data;
 } ngtcp2_qlog;
 
+#ifndef NGTCP2_DISABLE_QLOG
+
 /*
  * ngtcp2_qlog_init initializes |qlog|.
  */
@@ -157,5 +159,111 @@ void ngtcp2_qlog_version_negotiation_pkt_received(ngtcp2_qlog *qlog,
                                                   const ngtcp2_pkt_hd *hd,
                                                   const uint32_t *sv,
                                                   size_t nsv);
+
+#else
+
+static inline void ngtcp2_qlog_init(ngtcp2_qlog *qlog, ngtcp2_qlog_write write,
+                      ngtcp2_tstamp ts, void *user_data)
+{
+  ((void)qlog);
+  ((void)write);
+  ((void)ts);
+  ((void)user_data);
+}
+
+static inline void ngtcp2_qlog_start(ngtcp2_qlog *qlog, const ngtcp2_cid *odcid, int server)
+{
+  ((void)qlog);
+  ((void)odcid);
+  ((void)server);
+}
+
+static inline void ngtcp2_qlog_end(ngtcp2_qlog *qlog)
+{
+  ((void)qlog);
+}
+
+static inline void ngtcp2_qlog_write_frame(ngtcp2_qlog *qlog, const ngtcp2_frame *fr)
+{
+  ((void)qlog);
+  ((void)fr);
+}
+
+static inline void ngtcp2_qlog_pkt_received_start(ngtcp2_qlog *qlog)
+{
+  ((void)qlog);
+}
+
+static inline void ngtcp2_qlog_pkt_received_end(ngtcp2_qlog *qlog, const ngtcp2_pkt_hd *hd,
+                                  size_t pktlen)
+{
+  ((void)qlog);
+  ((void)hd);
+  ((void)pktlen);
+}
+
+static inline void ngtcp2_qlog_pkt_sent_start(ngtcp2_qlog *qlog)
+{
+  ((void)qlog);
+}
+
+static inline void ngtcp2_qlog_pkt_sent_end(ngtcp2_qlog *qlog, const ngtcp2_pkt_hd *hd,
+                              size_t pktlen)
+{
+  ((void)qlog);
+  ((void)hd);
+  ((void)pktlen);
+}
+
+static inline void ngtcp2_qlog_parameters_set_transport_params(
+  ngtcp2_qlog *qlog, const ngtcp2_transport_params *params, int server,
+  ngtcp2_qlog_side side)
+{
+  ((void)qlog);
+  ((void)params);
+  ((void)server);
+  ((void)side);
+}
+
+static inline void ngtcp2_qlog_metrics_updated(ngtcp2_qlog *qlog,
+                                 const ngtcp2_conn_stat *cstat)
+{
+  ((void)qlog);
+  ((void)cstat);
+}
+
+static inline void ngtcp2_qlog_pkt_lost(ngtcp2_qlog *qlog, ngtcp2_rtb_entry *ent)
+{
+  ((void)qlog);
+  ((void)ent);
+}
+
+static inline void ngtcp2_qlog_retry_pkt_received(ngtcp2_qlog *qlog, const ngtcp2_pkt_hd *hd,
+                                    const ngtcp2_pkt_retry *retry)
+{
+  ((void)qlog);
+  ((void)hd);
+  ((void)retry);
+}
+
+static inline void ngtcp2_qlog_stateless_reset_pkt_received(
+  ngtcp2_qlog *qlog, const ngtcp2_pkt_stateless_reset2 *sr)
+{
+  ((void)qlog);
+  ((void)sr);
+}
+
+static inline void ngtcp2_qlog_version_negotiation_pkt_received(ngtcp2_qlog *qlog,
+                                                  const ngtcp2_pkt_hd *hd,
+                                                  const uint32_t *sv,
+                                                  size_t nsv)
+{
+  ((void)qlog);
+  ((void)hd);
+  ((void)sv);
+  ((void)nsv);
+}
+
+#endif /* !defined(NGTCP2_DISABLE_QLOG) */
 
 #endif /* !defined(NGTCP2_QLOG_H) */

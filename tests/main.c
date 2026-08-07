@@ -87,7 +87,9 @@ int main(int argc, char *argv[]) {
     str_suite,
     tstamp_suite,
     cc_suite,
+#ifndef NGTCP2_DISABLE_QLOG
     qlog_suite,
+#endif
     window_filter_suite,
     settings_suite,
     callbacks_suite,
@@ -98,7 +100,9 @@ int main(int argc, char *argv[]) {
     ratelim_suite,
     conn_info_suite,
     cid_suite,
+#ifndef NGTCP2_DISABLE_LOGGING
     log_suite,
+#endif
     fmt_suite,
     macro_suite,
     {0},

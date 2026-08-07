@@ -88,7 +88,7 @@ static size_t map_index(const ngtcp2_map *map, ngtcp2_map_key_type key) {
   return (size_t)((key * NGTCP2_MAP_FIBO) >> (64 - map->hashbits));
 }
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(NGTCP2_DISABLE_LOGGING)
 void ngtcp2_map_print_distance(const ngtcp2_map *map) {
   size_t i;
   size_t idx;

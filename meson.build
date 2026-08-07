@@ -33,8 +33,6 @@ sources = files(
     'lib/ngtcp2_idtr.c',
     'lib/ngtcp2_gaptr.c',
     'lib/ngtcp2_ringbuf.c',
-    'lib/ngtcp2_log.c',
-    'lib/ngtcp2_qlog.c',
     'lib/ngtcp2_cid.c',
     'lib/ngtcp2_ksl.c',
     'lib/ngtcp2_cc.c',
@@ -49,7 +47,6 @@ sources = files(
     'lib/ngtcp2_opl.c',
     'lib/ngtcp2_balloc.c',
     'lib/ngtcp2_objalloc.c',
-    'lib/ngtcp2_unreachable.c',
     'lib/ngtcp2_transport_params.c',
     'lib/ngtcp2_settings.c',
     'lib/ngtcp2_callbacks.c',
@@ -104,6 +101,34 @@ foreach header : [
     endif
 endforeach
 
+if get_option('disable_logging')
+    defs += '-DNGTCP2_DISABLE_LOGGING'
+else
+    sources += files(
+        'lib/ngtcp2_log.c',
+    )
+endif
+
+if get_option('disable_strerror')
+    defs += '-DNGTCP2_DISABLE_STRERROR'
+endif
+
+if get_option('disable_qlog')
+    defs += '-DNGTCP2_DISABLE_QLOG'
+else
+    sources += files(
+        'lib/ngtcp2_qlog.c',
+    )
+endif
+
+if get_option('use_builtin_unreachable')
+    defs += '-DNGTCP2_USE_BUILTIN_UNREACHABLE'
+else
+    sources += files(
+        'lib/ngtcp2_unreachable.c'
+    )
+endif
+
 ngtcp2_lib = library(
     'ngtcp2',
     sources,
@@ -151,7 +176,6 @@ if get_option('tests')
         'tests/ngtcp2_str_test.c',
         'tests/ngtcp2_tstamp_test.c',
         'tests/ngtcp2_cc_test.c',
-        'tests/ngtcp2_qlog_test.c',
         'tests/ngtcp2_window_filter_test.c',
         'tests/ngtcp2_settings_test.c',
         'tests/ngtcp2_callbacks_test.c',
@@ -168,11 +192,18 @@ if get_option('tests')
         'tests/ngtcp2_test_helper.c',
     )
 
+    if not get_option('disable_qlog')
+        test_sources += files(
+            'tests/ngtcp2_qlog_test.c',
+        )
+    endif
+
     ngtcp2_test = executable(
         'ngtcp2_test',
         test_sources,
         dependencies: [ ngtcp2_dep, munit_dep ],
-        include_directories: include_directories('lib/')
+        include_directories: include_directories('lib/'),
+        c_args: defs
     )
 
     test('ngtcp2_test', ngtcp2_test)

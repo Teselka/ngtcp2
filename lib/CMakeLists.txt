@@ -89,6 +89,14 @@ set(NGTCP2_CONFIG_INSTALL_DIR "lib/cmake/${PROJECT_NAME}")
 set(NGTCP2_NAMESPACE "${PROJECT_NAME}::")
 set(NGTCP2_VERSION ${PROJECT_VERSION})
 
+if(DISABLE_LOGGING)
+  set(NGTCP2_DISABLE_LOGGING 1)
+endif()
+
+if (DISABLE_STRERROR)
+  set(NGTCP2_DISABLE_STRERROR 1)
+endif()
+
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
   "${NGTCP2_VERSION_CONFIG}" VERSION ${NGTCP2_VERSION} COMPATIBILITY SameMajorVersion

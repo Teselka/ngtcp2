@@ -122,7 +122,16 @@ int ngtcp2_map_each(const ngtcp2_map *map, int (*func)(void *data, void *ptr),
                     void *ptr);
 
 #ifndef WIN32
+
+#ifndef NGTCP2_DISABLE_LOGGING
 void ngtcp2_map_print_distance(const ngtcp2_map *map);
+#else
+static inline void ngtcp2_map_print_distance(const ngtcp2_map *map)
+{
+  ((void)map);
+}
+#endif
+
 #endif /* !defined(WIN32) */
 
 #endif /* !defined(NGTCP2_MAP_H) */

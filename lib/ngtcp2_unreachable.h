@@ -29,6 +29,8 @@
 #  include <config.h>
 #endif /* defined(HAVE_CONFIG_H) */
 
+#if !defined(NGTCP2_USE_BUILTIN_UNREACHABLE)
+
 #include <ngtcp2/ngtcp2.h>
 
 #ifdef __FILE_NAME__
@@ -37,8 +39,13 @@
 #  define NGTCP2_FILE_NAME "(file)"
 #endif /* !defined(__FILE_NAME__) */
 
+#ifndef NGTCP2_DISABLE_LOGGING
 #define ngtcp2_unreachable()                                                   \
   ngtcp2_unreachable_fail(NGTCP2_FILE_NAME, __LINE__, __func__)
+#else
+#define ngtcp2_unreachable()                                                   \
+  ngtcp2_unreachable_fail(0, 0, 0)
+#endif
 
 #ifdef _MSC_VER
 __declspec(noreturn)
@@ -48,5 +55,16 @@ __declspec(noreturn)
         __attribute__((noreturn))
 #endif /* !defined(_MSC_VER) */
         ;
+
+#else
+
+#if defined(__GNUC__) || defined(__clang__)
+#  define ngtcp2_unreachable() __builtin_unreachable()
+#elif defined(_MSC_VER)
+#  define ngtcp2_unreachable() __assume(0)
+#endif
+
+#endif /* !defined(NGTCP2_USE_BUILTIN_UNREACHABLE) */
+
 
 #endif /* !defined(NGTCP2_UNREACHABLE_H) */
