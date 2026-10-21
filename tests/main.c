@@ -89,6 +89,7 @@ int main(int argc, char *argv[]) {
     cc_suite,
 #ifndef NGTCP2_DISABLE_QLOG
     qlog_suite,
+#endif
     wf_suite,
     settings_suite,
     callbacks_suite,

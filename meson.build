@@ -43,7 +43,7 @@ sources = files(
     'lib/ngtcp2_pmtud.c',
     'lib/ngtcp2_version.c',
     'lib/ngtcp2_rst.c',
-    'lib/ngtcp2_window_filter.c',
+    'lib/ngtcp2_wf.c',
     'lib/ngtcp2_opl.c',
     'lib/ngtcp2_balloc.c',
     'lib/ngtcp2_objalloc.c',
@@ -176,7 +176,7 @@ if get_option('tests')
         'tests/ngtcp2_str_test.c',
         'tests/ngtcp2_tstamp_test.c',
         'tests/ngtcp2_cc_test.c',
-        'tests/ngtcp2_window_filter_test.c',
+        'tests/ngtcp2_wf_test.c',
         'tests/ngtcp2_settings_test.c',
         'tests/ngtcp2_callbacks_test.c',
         'tests/ngtcp2_ppe_test.c',
@@ -257,7 +257,7 @@ if get_option('crypto')
                 #ifndef WOLFSSL_QUIC
                 #error ""
                 #endif
-            ''')
+            ''', dependencies: wolfssl_dep)
                 wolfssl_crypto_sources = crypto_sources + files(
                     'crypto/wolfssl/wolfssl.c',    
                 )
@@ -278,9 +278,9 @@ if get_option('crypto')
                 wolfssl_opt = wolfssl_opt.enable_auto_if(true)
             else
                 if wolfssl_opt.enabled()
-                    error('wolfSSL support was explicitly enabled but libary wasn\'t built with QUIC support')
+                    error('wolfSSL support was explicitly enabled but library wasn\'t built with QUIC support')
                 else
-                    warning('wolfSSL was found but libary wasn\'t built with QUIC support')
+                    warning('wolfSSL was found but library wasn\'t built with QUIC support')
                 endif
             endif
         endif
@@ -293,7 +293,8 @@ if get_option('examples')
         dependencies: cc.find_library('ev', dirs: [ '/usr/lib' ])
     )
 
-    nghttp3_dep = dependency('nghttp3', fallback: [ 'nghttp3', 'nghttp3_dep' ])
+    cmake = import('cmake')
+    nghttp3_dep = cmake.subproject('nghttp3').dependency('nghttp3')
 
     add_languages('cpp', native: false)
 
