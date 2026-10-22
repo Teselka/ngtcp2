@@ -293,8 +293,29 @@ if get_option('examples')
         dependencies: cc.find_library('ev', dirs: [ '/usr/lib' ])
     )
 
-    cmake = import('cmake')
-    nghttp3_dep = cmake.subproject('nghttp3').dependency('nghttp3')
+    if get_option('system_nghttp3').allowed()
+        if get_option('system_nghttp3').enabled()
+            nghttp3_dep = dependency(
+                'nghttp3',
+                allow_fallback: false,
+                method: 'pkg-config'
+            )
+        else
+            nghttp3_dep = dependency(
+                'nghttp3', 
+                fallback: [ 'nghttp3', 'nghttp3_dep' ],
+                method: 'pkg-config'
+            )
+        endif
+    else
+        nghttp3_proj = subproject('nghttp3', required: false)
+        if nghttp3_proj.found() 
+            nghttp3_dep = nghttp3_proj.get_variable('nghttp3_dep')
+        else
+            cmake = import('cmake')
+            nghttp3_dep = cmake.subproject('nghttp3').dependency('nghttp3')
+        endif
+    endif
 
     add_languages('cpp', native: false)
 

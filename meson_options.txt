@@ -6,5 +6,7 @@ option('disable_strerror', type: 'boolean', value: false, description: 'Disable 
 option('disable_qlog', type: 'boolean', value: false, description: 'Disable qlog support')
 option('use_builtin_unreachable', type: 'boolean', value: false, description: 'Use compiler builtin unreachable intrinsic if possible or abort')
 
+option('system_nghttp3', type: 'feature', value: 'auto', description: 'Use system nghttp3 if auto can fallback to the subproject')
+
 option('openssl', type: 'feature', value: 'auto', description: 'Build with OpenSSL support')
 option('wolfssl', type: 'feature', value: 'auto', description: 'Build with wolfSSL support')
